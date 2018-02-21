@@ -15,4 +15,4 @@
 #private
 .env
 nodemon.json
-/importCSV
+/sensitive
