@@ -14,16 +14,15 @@ app.use(session(
   }
 ));
 
-app.get('/',(req,res)=>{
-  console.log(req.session.authenticated)
+app.get('/dbmodel',(req,res)=>{
   if(!req.session.authenticated){
     res.end("You are NOT Logged in and NOT authorized to use app")
   }
   else if (process.env.AUTHORIZED_USERS.includes(req.session.authenticated)){
-    res.end("You are Logged in and are authorized to use app")
+    res.sendFile(path.resolve(__dirname, 'sensitive', 'db.json'))
   }
   else{
-    res.end("You are Logged in but not authorized to use app")
+    res.end("You are Logged in but not authorized!")
   }
 
 })
