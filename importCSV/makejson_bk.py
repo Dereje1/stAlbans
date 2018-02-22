@@ -58,17 +58,19 @@ builddata = {}
 
 def groupExpand(group,data):
     groupEntities = {}
-    groupEntities["group"]=group
-    groupEntities["room"]=data[4]
-    groupEntities["students"]=[]
+    groupEntities[group]={}
+    groupEntities[group]["room"]=data[4]
+    groupEntities[group]["students"]=[]
     return groupEntities
 def groupcheck(arr,check):
-    allgroups = []
-
+    allkeys = []
     for l in arr:
-        if(l["group"]==check):
-            return False
-    return True
+        allkeys.append(l.keys())
+    flat_list = [item for sublist in allkeys for item in sublist]
+    if (flat_list.count(check)==0):
+        return True
+    else:
+        return False
 
 for animal in uniqueAnimals:
     groupHolder=[]
@@ -78,22 +80,22 @@ for animal in uniqueAnimals:
                 if(groupcheck(groupHolder,group)):
                     groupHolder.append(groupExpand(group,data))
                     builddata[animal] = groupHolder
-
 def findstudents(animal,group):
     students = []
     for data in compiledData:
         if (data[2]==animal and data[3]==group):
             studentobject={}
-            studentobject["name"]=data[0]
-            studentobject["dob"]=data[1]
-            studentobject["Parent1"]=".."
+            studentobject[data[0]]={}
+            studentobject[data[0]]["dob"]=data[1]
+            studentobject[data[0]]["Parent1"]=".."
             students.append(studentobject)
     return students
 
 def compilestudents():
     for animal in builddata:
-        for groupobject in builddata[animal]:
-            groupobject['students'] = (findstudents(animal,groupobject['group']))
+        for group in builddata[animal]:
+            for groupItems in group:
+                group[groupItems]['students'] = (findstudents(animal,groupItems))
 
 compilestudents()
 json_data = json.dumps(builddata)
