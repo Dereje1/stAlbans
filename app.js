@@ -4,6 +4,8 @@ const path = require('path')
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
+
+let mongo = require('mongodb').MongoClient
 const app = module.exports =  express()
 
 app.use(session(
@@ -19,13 +21,33 @@ app.get('/dbmodel',(req,res)=>{
     res.end("You are NOT Logged in and NOT authorized to use app")
   }
   else if (process.env.AUTHORIZED_USERS.includes(req.session.authenticated)){
-    res.sendFile(path.resolve(__dirname, 'sensitive', 'db.json'))
+    //res.sendFile(path.resolve(__dirname, 'sensitive', 'db.json'))
+    getData(process.env.MONGOLAB_URI).then((d)=>{
+      res.json(d[0])
+    })
   }
   else{
     res.end("You are Logged in but not authorized!")
   }
 
 })
+
+
+function getData(dbLink){// finds a requested URL, if bylink is true it will search
+  //by link, otherwise will search by urlid
+  let query = {}
+  return mongo.connect(dbLink)//returns promise after finding
+    .then(function(db){
+      let collection = db.collection('dbOriginal')//specify collection
+      return collection.find(query).toArray()//look for query and use built in array function
+    })
+    .then(function(items) {//the whole function will return this
+      return items
+    })
+    .catch(function(err) {
+        throw err;
+    });
+}
 
 const db = require('./models/db')//establishes db connection
 
