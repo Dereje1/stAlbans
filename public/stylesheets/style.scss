@@ -1,6 +1,47 @@
 .mainbox{
   display: flex;
-  justify-content: center;
-  margin-top: 80px;
+  flex-direction: column;
+  .headerbox{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 80px;
+  }
+  .datadisplay{
+    margin-top: 50px;
+    display: flex;
+
+    .groups{
+      width:50%;
+      .accord{
+        margin: auto;
+        width:50%;
+
+        .panel{
+          .panel-title{
+            cursor: pointer;
+            white-space: pre-wrap;
+            text-decoration: none;
+          }
+          .studentbox{
+            cursor:pointer;
+          }
+        }
+      }
+    }
+    .studentdisplay{
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        padding: 15px;
+        background: #cececa;
+        width: 300px;
+        height:300px;
+        border-radius: 10px;
+        font-size: 2rem;
+        .name{
+          font-size: 3rem;
+        }
+    }
+  }
 
 }

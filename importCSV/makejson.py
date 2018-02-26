@@ -18,13 +18,14 @@ def read_csv(File_name):
 
 x = read_csv("../sensitive/data2.csv")
 
-groupdescriptions=["TADPOLES - Group 1A - Room 8 (8/2)","TADPOLES - Group 1B - Room 8 (8/2)","TADPOLES - Group 2A - Room 8 (8/2)","TADPOLES - Group 2B - Room 8 (8/2)","FROGS - Group 1A - Room 6 (8/2)","FROGS - Group 1B - Room 6 (8/2)","FROGS/CATERPILLARS - Group 1A - Room 6 (8/2)","FROGS/CATERPILLARS - Group 1B - Room 6 (8/2)","CATERPILLARS - Group 1A - Room 4 (8/2)","CATERPILLARS - Group 1B - Room 4 (8/2)","BUTTERFLIES - Group 1A - Room 3 (12/3)","BUTTERFLIES - Group 1A - Room 3 (12/3)","BUTTERFLIES - Group 2A - Room 3 (12/3)","BUTTERFLIES - Group 2B - Room 4 (12/3)","BUNNIES - Group 1 - Room 1 (16/2)","BUNNIES - Group 2 - Room 1 (16/2)","ELEPHANTS - Group 1 - Room 9 (12/2)","ELEPHANTS - Group 2 - Room 10 (8/1)","EAGLES - Group 1 - Room 11 (20/2)"]
+groupdescriptions=[["TADPOLES - Group 1A - Room 8 (8/2)","TADPOLES - Group 1B - Room 8 (8/2)","TADPOLES - Group 2A - Room 8 (8/2)","TADPOLES - Group 2B - Room 8 (8/2)","FROGS - Group 1A - Room 6 (8/2)","FROGS - Group 1B - Room 6 (8/2)","FROGS/CATERPILLARS - Group 1A - Room 6 (8/2)","FROGS/CATERPILLARS - Group 1B - Room 6 (8/2)","CATERPILLARS - Group 1A - Room 4 (8/2)","CATERPILLARS - Group 1B - Room 4 (8/2)","BUTTERFLIES - Group 1A - Room 3 (12/3)","BUTTERFLIES - Group 1A - Room 3 (12/3)","BUTTERFLIES - Group 2A - Room 3 (12/3)","BUTTERFLIES - Group 2B - Room 4 (12/3)","BUNNIES - Group 1 - Room 1 (16/2)","BUNNIES - Group 2 - Room 1 (16/2)","ELEPHANTS - Group 1 - Room 9 (12/2)","ELEPHANTS - Group 2 - Room 10 (8/1)","EAGLES - Group 1 - Room 11 (20/2)"],[8,8,8,8,8,8,8,8,8,8,10,10,12,8,12,8,16,12,20]]
 
 
 
 y = x[3:] # just get to the student data
 
 collector=[]
+
 for (e,srow) in enumerate(y):
     groupcount=0
     for c,months in enumerate(x[2]):
@@ -32,8 +33,7 @@ for (e,srow) in enumerate(y):
             groupcount+=1
             #print(e+4,c+1)
             #print("group " + str(groupcount) + "-" + srow[c])
-
-            collector.append([groupcount,srow[c],groupdescriptions[groupcount-1]])
+            collector.append([groupcount,srow[c],groupdescriptions[0][groupcount-1]])
 
 compiledData = []
 for g in range(19):
@@ -49,18 +49,26 @@ for g in range(19):
                 room = students[2].split("-")[2].strip()
                 compiledData.append([name,dob,animal,groupNo,room])
 
+
+
 allAnimals  = [x[2] for x in compiledData]
 allGroups  = [x[3] for x in compiledData]
 uniqueAnimals = set(allAnimals)
 uniqueGroups = set(allGroups)
 
 builddata = {}
+def findmax(desc):
+    reconstructed =  desc[1] + " - " + desc[0][3] + " - " + desc[0][4]
+    for e,m in enumerate(groupdescriptions[0]):
+        if (m==reconstructed):
+            return int(groupdescriptions[1][e])
+def groupExpand(group,data,animal):
 
-def groupExpand(group,data):
     groupEntities = {}
     groupEntities["group"]=group
     groupEntities["room"]=data[4]
     groupEntities["students"]=[]
+    groupEntities["maximum"]= findmax([data,animal])
     return groupEntities
 def groupcheck(arr,check):
     allgroups = []
@@ -76,7 +84,7 @@ for animal in uniqueAnimals:
         for data in compiledData:
             if (data[2]==animal and data[3]==group):
                 if(groupcheck(groupHolder,group)):
-                    groupHolder.append(groupExpand(group,data))
+                    groupHolder.append(groupExpand(group,data,animal))
                     builddata[animal] = groupHolder
 
 def findstudents(animal,group):
@@ -86,7 +94,9 @@ def findstudents(animal,group):
             studentobject={}
             studentobject["name"]=data[0]
             studentobject["dob"]=data[1]
-            studentobject["Parent1"]=".."
+            studentobject["parent1"]=".."
+            studentobject["parent2"]=".."
+            studentobject["enrollment"]=".."
             students.append(studentobject)
     return students
 
@@ -97,5 +107,6 @@ def compilestudents():
 
 compilestudents()
 json_data = json.dumps(builddata)
+
 
 print(json_data)
