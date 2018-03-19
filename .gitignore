@@ -14,5 +14,5 @@
 
 #private
 .env
-nodemon.json
 /sensitive
+/data

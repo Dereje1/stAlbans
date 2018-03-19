@@ -15,7 +15,7 @@ class Home extends Component {
     };
   }
   componentDidMount() {
-    axios.get('/dbmodel').then((response)=>{
+    axios.get('/current').then((response)=>{
       if(typeof(response.data)=="string"){return;}
       let allAnimals = Object.keys(response.data).filter((animal)=>{
         return (animal!=="_id")
@@ -28,7 +28,7 @@ class Home extends Component {
   }
 
   viewDBModel(){
-    window.open("/dbmodel",'_blank')
+    window.open("/current",'_blank')
   }
   populateAnimals(){
     if(!this.state.animals){return null}

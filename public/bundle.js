@@ -47713,7 +47713,7 @@ var Home = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      _axios2.default.get('/dbmodel').then(function (response) {
+      _axios2.default.get('/current').then(function (response) {
         if (typeof response.data == "string") {
           return;
         }
@@ -47729,7 +47729,7 @@ var Home = function (_Component) {
   }, {
     key: 'viewDBModel',
     value: function viewDBModel() {
-      window.open("/dbmodel", '_blank');
+      window.open("/current", '_blank');
     }
   }, {
     key: 'populateAnimals',
