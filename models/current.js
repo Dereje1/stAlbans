@@ -1,8 +1,10 @@
 "use strict"
 //mongoose shcema on what to store fror pins?
 var mongoose = require('mongoose');
-var testSchema = mongoose.Schema({
+var currentDataSchema = mongoose.Schema({
+  data:{},
+  created:Number
 });
 
 //var venueGoers = mongoose.model('going',goingSchema);
-module.exports = mongoose.model('test',testSchema);
+module.exports = mongoose.model('currentData',currentDataSchema);
