@@ -108,5 +108,9 @@ def compilestudents():
 compilestudents()
 json_data = json.dumps(builddata)
 
+jsonLocation = os.path.join(os.path.dirname((os.getcwd())),'sensitive','db.json')
+jfile = open(jsonLocation,'w')
+jfile.write(json_data)
+jfile.close()
 
 print(json_data)
